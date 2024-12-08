@@ -5,27 +5,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Project Pegasus</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon.png">
+    <script type="module">
+        import { initFileExplorer } from './js/file-explorer.js';
+        import { initCodeDisplay } from './js/code-display.js';
+        import { initChat } from './js/chat.js';
+        import { testApiConnection } from './js/aiService.js';
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            console.log('DOM content loaded');
+            await testApiConnection();
+            initFileExplorer();
+            initCodeDisplay();
+            initChat();
+            console.log('All components initialized');
+        });
+    </script>
 </head>
 <body>
     <div class="topbar">
-        <img src="images/logo.png" alt="Pegasus Logo" class="logo">
+        <img src="images/logo.png" alt="Logo" class="logo">
+        <div class="ai-model-selector">
+            <label for="ai-model">AI Model:</label>
+            <select id="ai-model">
+                <option value="llama2">Llama 2</option>
+                <option value="codellama">Code Llama</option>
+                <option value="mistral">Mistral</option>
+            </select>
+        </div>
     </div>
     <div class="content-wrapper">
-        <div id="chat-container">
-            <div id="chat-messages"></div>
-            <div id="user-input-container">
-                <input type="text" id="user-input" placeholder="Type your message here...">
-                <button id="send-button">Send</button>
-            </div>
-        </div>
+        <div id="file-explorer"></div>
         <div id="main-content">
             <div id="code-display"></div>
         </div>
-        <div id="file-explorer">
-            <h2>Project Files</h2>
-            <div id="file-tree"></div>
+        <div id="chat-container">
+            <div id="chat-messages"></div>
+            <div id="user-input-container">
+                <textarea id="user-input" placeholder="Type your message..."></textarea>
+                <button id="send-button">Send</button>
+            </div>
         </div>
     </div>
-    <script src="script.js"></script>
 </body>
 </html>
