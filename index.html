@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Project Pegasus</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon.png">
+    <link rel="icon" type="image/x-icon" href="static/favicon.ico">
     <script type="module">
         import { initFileExplorer } from './js/file-explorer.js';
         import { initCodeDisplay } from './js/code-display.js';
@@ -22,6 +22,7 @@
         });
     </script>
 </head>
+
 <body>
     <div class="topbar">
         <img src="images/logo.png" alt="Logo" class="logo">
@@ -34,11 +35,43 @@
             </select>
         </div>
     </div>
-    <div class="content-wrapper">
-        <div id="file-explorer"></div>
-        <div id="main-content">
-            <div id="code-display"></div>
+
+    <nav class="navbar">
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li class="dropdown">
+                <a href="javascript:void(0)" class="dropbtn">Tools</a>
+                <div class="dropdown-content">
+                    <a href="#tool1">Tool 1</a>
+                    <a href="#tool2">Tool 2</a>
+                    <a href="#tool3">Tool 3</a>
+                </div>
+            </li>
+            <li><a href="#settings">Settings</a></li>
+        </ul>
+
+        <div class="navbar-status">
+            <div class="status-item">
+                <span class="status-indicator" style="background-color: green;"></span>
+                <span id="api-status">API: Online</span>
+            </div>
+            <!-- Add more status items as needed -->
         </div>
+    </nav>
+
+    <div class="content-wrapper">
+        <div id="file-explorer">
+            <h2>File Explorer</h2>
+            <!-- File explorer content will be dynamically populated here -->
+        </div>
+
+        <div id="main-content">
+            <div id="code-display">
+                <!-- Code content will be displayed here -->
+            </div>
+        </div>
+
         <div id="chat-container">
             <div id="chat-messages"></div>
             <div id="user-input-container">
@@ -47,5 +80,19 @@
             </div>
         </div>
     </div>
+
+    <script src="js/file-explorer.js"></script>
+    <script src="js/code-display.js"></script>
+    <script src="js/chat.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/fileSystem.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            setupToggleButtons();
+            fetchFiles();
+            setupChat();
+            // Add any other initialization functions here
+        });
+    </script>
 </body>
 </html>
