@@ -69,7 +69,7 @@ def write_file():
 def generate():
     data = request.json
     prompt = data.get('prompt', '')
-    model = data.get('model', 'llama2')  # Default to llama2, but you can change this
+    model = data.get('model', 'llama2',)  # Default to llama2, but you can change this
 
     logging.debug(f"Sending request to Ollama with model: {model} and prompt: {prompt}")
 
