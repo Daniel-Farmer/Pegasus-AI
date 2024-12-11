@@ -4,13 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Project Pegasus</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="icon" type="image/x-icon" href="static/favicon.ico">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/topbar.css">
+    <link rel="stylesheet" href="css/chat.css">
+    <link rel="stylesheet" href="css/file-explorer.css">
+    <link rel="stylesheet" href="css/navbar.css">
+    <link rel="stylesheet" href="css/utils.css">
+    <link rel="icon" type="image/x-icon" href="images/favicon.png">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+
     <script type="module">
         import { initFileExplorer } from './js/file-explorer.js';
         import { initCodeDisplay } from './js/code-display.js';
         import { initChat } from './js/chat.js';
         import { testApiConnection } from './js/aiService.js';
+        import { setupToggleButtons } from './js/ui.js';
+        import { fetchFiles } from './js/fileSystem.js';
 
         document.addEventListener('DOMContentLoaded', async () => {
             console.log('DOM content loaded');
@@ -18,6 +28,8 @@
             initFileExplorer();
             initCodeDisplay();
             initChat();
+            setupToggleButtons();
+            fetchFiles();
             console.log('All components initialized');
         });
     </script>
@@ -25,7 +37,13 @@
 
 <body>
     <div class="topbar">
-        <img src="images/logo.png" alt="Logo" class="logo">
+        <div class="logo-container">
+            <img src="images/logo.png" alt="Logo" class="logo">
+            <div class="logo-text">
+                <span class="logo-title">Pegasus Panel</span>
+                <span class="logo-slogan">Fearless Innovation</span>
+            </div>
+        </div>
         <div class="ai-model-selector">
             <label for="ai-model">AI Model:</label>
             <select id="ai-model">
@@ -81,18 +99,40 @@
         </div>
     </div>
 
-    <script src="js/file-explorer.js"></script>
-    <script src="js/code-display.js"></script>
-    <script src="js/chat.js"></script>
-    <script src="js/ui.js"></script>
-    <script src="js/fileSystem.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            setupToggleButtons();
-            fetchFiles();
-            setupChat();
-            // Add any other initialization functions here
+    <script type="module">
+        import { sendMessage, setCurrentModel } from './js/aiService.js';
+        import { displayMessage } from './js/chat.js';
+
+        const sendButton = document.getElementById('send-button');
+        const userInput = document.getElementById('user-input');
+        const aiModelSelect = document.getElementById('ai-model');
+
+        aiModelSelect.addEventListener('change', (e) => {
+            setCurrentModel(e.target.value);
         });
+
+        sendButton.addEventListener('click', handleSendMessage);
+        userInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                handleSendMessage();
+            }
+        });
+
+        async function handleSendMessage() {
+            const message = userInput.value.trim();
+            if (message) {
+                displayMessage('User', message);
+                userInput.value = '';
+                try {
+                    const response = await sendMessage(message);
+                    displayMessage('AI', response);
+                } catch (error) {
+                    console.error('Error sending message:', error);
+                    displayMessage('System', 'An error occurred while processing your request.');
+                }
+            }
+        }
     </script>
 </body>
 </html>
